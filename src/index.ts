@@ -1,24 +1,32 @@
+import axios from 'axios';
 import { UserModel } from './models/UserModel';
 
-const user = new UserModel({ name: 'Alexandr', age: 36 });
-user.set({ name: 'Podoprigora Alexand' });
+// const request = axios.create({
+//     baseURL: 'http://localhost:9999/'
+// });
 
-user.on('save', () => {
-    console.log('save user #1');
-});
-user.on('save', () => {
-    console.log('save user #2');
-});
-user.on('save', () => {
-    console.log('save user #3');
-});
+// request.post('/users', {
+//     name: 'Alexand Podoprigora',
+//     age: 36
+// });
 
-user.on('delete', () => {
-    console.log('delete user');
-});
+// request.get('users/1').then((response) => {
+//     console.log(response);
+// });
 
-// console.log(user.events);
+// const user = new UserModel({ id: 1 });
 
-user.trigger('test');
+// user.fetch();
 
-// console.log(user.get("name"));
+// setTimeout(() => {
+//     user.set({ name: 'Alexand' });
+//     user.save();
+//     // console.log(user);
+// }, 1000);
+
+// const user = new UserModel({ name: 'Alexand', age: 36 });
+// user.save();
+
+// setTimeout(() => {
+//     console.log(user);
+// }, 1000);
