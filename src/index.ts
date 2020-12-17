@@ -1,7 +1,12 @@
 import { Sync } from './models/Sync';
+import { UserModel } from './models/UserModel';
 
-const sync = new Sync('http://localhost:1111/users');
+const user = new UserModel({});
 
-sync.fetch(1).then((response) => {
-    console.log(response.data);
+user.on('save', () => {
+    console.log('User was saved.', user);
 });
+
+user.set({ name: 'Test User' });
+
+user.save();
