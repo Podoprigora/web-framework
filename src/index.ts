@@ -1,10 +1,7 @@
-import axios from 'axios';
-import { UserModel } from './models/UserModel';
+import { Sync } from './models/Sync';
 
-const user = new UserModel({ id: 1, name: 'Alexandr' });
+const sync = new Sync('http://localhost:1111/users');
 
-user.events.on('change', () => {
-    console.log('user was changed');
+sync.fetch(1).then((response) => {
+    console.log(response.data);
 });
-
-user.events.trigger('change');

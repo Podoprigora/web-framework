@@ -1,18 +1,18 @@
 import Axios, { AxiosResponse } from 'axios';
 import { Eventing } from './Eventing';
+import { Sync } from './Sync';
 
-interface UserProps {
+export interface UserProps {
     id?: number;
     name?: string;
     age?: number;
 }
 
-const baseURL = 'http://localhost:9999';
-
 export class UserModel {
     events = new Eventing();
+    sync = new Sync<UserProps>('http://localhost:1111/users');
 
-    constructor(private data: UserProps = {}) {}
+    constructor(private data: UserProps) {}
 
     get(propName: string): string | number {
         return this.data[propName];
@@ -20,25 +20,5 @@ export class UserModel {
 
     set(update: UserProps): void {
         Object.assign(this.data, update);
-    }
-
-    fetch(): void {
-        const id = this.get('id');
-
-        Axios.get(`${baseURL}/users/${id}`).then((response: AxiosResponse): void => {
-            this.set(response.data);
-        });
-    }
-
-    save(): void {
-        const id = this.get('id');
-
-        if (id) {
-            Axios.put(`${baseURL}/users/${id}`, this.data);
-        } else {
-            Axios.post(`${baseURL}/users`, this.data).then((response: AxiosResponse): void => {
-                this.set(response.data);
-            });
-        }
     }
 }
