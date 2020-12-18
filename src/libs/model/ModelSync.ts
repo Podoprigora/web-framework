@@ -1,6 +1,6 @@
 import Axios, { AxiosPromise } from 'axios';
 
-interface DataWithId {
+interface HasId {
     id?: number;
 }
 
@@ -8,7 +8,7 @@ const formatBaseUrl = (url: string = ''): string => {
     return url.trim().replace(/\/+$/, '');
 };
 
-export class Sync<T extends DataWithId> {
+export class ModelSync<T extends HasId> {
     baseURL: string;
 
     constructor(baseURL: string) {
