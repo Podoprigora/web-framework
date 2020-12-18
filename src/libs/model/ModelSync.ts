@@ -1,31 +1,28 @@
 import Axios, { AxiosPromise } from 'axios';
-
-interface HasId {
-    id?: number;
-}
+import { HasIdInterface } from './Model';
 
 const formatBaseUrl = (url: string = ''): string => {
     return url.trim().replace(/\/+$/, '');
 };
 
-export class ModelSync<T extends HasId> {
-    baseURL: string;
+export class ModelSync<T extends HasIdInterface> {
+    baseUrl: string;
 
-    constructor(baseURL: string) {
-        this.baseURL = formatBaseUrl(baseURL);
+    constructor(baseUrl: string) {
+        this.baseUrl = formatBaseUrl(baseUrl);
     }
 
     fetch(id: number): AxiosPromise<T> {
-        return Axios.get(`${this.baseURL}/${id}`);
+        return Axios.get(`${this.baseUrl}/${id}`);
     }
 
     save(data: T): AxiosPromise<T> {
         const { id } = data;
 
         if (id) {
-            return Axios.put(`${this.baseURL}/${id}`, data);
+            return Axios.put(`${this.baseUrl}/${id}`, data);
         } else {
-            return Axios.post(this.baseURL, data);
+            return Axios.post(this.baseUrl, data);
         }
     }
 }

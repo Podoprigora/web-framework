@@ -1,21 +1,27 @@
+import { AxiosPromise } from 'axios';
 import { ModelAttributes } from './ModelAttributes';
 import { ModelEventing } from './ModelEventing';
 import { ModelSync } from './ModelSync';
 
-type EventTypes = 'change' | 'save';
+type EventsType = 'change' | 'save';
 
-interface HasId {
+type CallbackType = () => void;
+
+export interface HasIdInterface {
     id?: number;
 }
 
-export class Model<T extends HasId> {
+export class Model<T extends HasIdInterface> {
     private events = new ModelEventing();
     private sync: ModelSync<T>;
     private attribures: ModelAttributes<T>;
 
-    constructor(attrs: T, baseUrl: string) {
-        this.attribures = new ModelAttributes(attrs);
-        this.sync = new ModelSync(baseUrl);
+    constructor(attrs: T, url?: string) {
+        this.attribures = new ModelAttributes<T>(attrs);
+
+        if (url && url.length > 0) {
+            this.sync = new ModelSync<T>(url);
+        }
     }
 
     get get() {
@@ -27,11 +33,11 @@ export class Model<T extends HasId> {
         this.events.trigger('change');
     }
 
-    on(eventName: EventTypes, callback: () => void): void {
+    on(eventName: EventsType, callback: CallbackType): void {
         this.events.on(eventName, callback);
     }
 
-    trigger(eventName: EventTypes): void {
+    trigger(eventName: EventsType): void {
         this.events.trigger(eventName);
     }
 
@@ -42,12 +48,20 @@ export class Model<T extends HasId> {
             throw new Error('Cannot fetch data without an ID!');
         }
 
+        if (!this.sync) {
+            return;
+        }
+
         this.sync.fetch(id).then((response) => {
             this.set(response.data);
         });
     }
 
     save(): void {
+        if (!this.sync) {
+            return;
+        }
+
         this.sync.save(this.attribures.getAll()).then((response) => {
             this.set(response.data);
             this.trigger('save');

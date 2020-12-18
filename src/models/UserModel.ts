@@ -6,4 +6,8 @@ export interface UserProps {
     age?: number;
 }
 
-export class UserModel extends Model<UserProps> {}
+export class UserModel extends Model<UserProps> {
+    constructor(attrs: UserProps) {
+        super(attrs, 'http://localhost:1111/users');
+    }
+}
