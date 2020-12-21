@@ -1,11 +1,15 @@
 import { UserModel } from './models/UserModel';
 
-const user = new UserModel({});
+const user = UserModel.create({ id: 16 });
 
-user.on('save', () => {
-    console.log('User was saved.', user);
-});
+user.fetch();
 
-user.set({ name: 'Test User', age: 10 });
+// console.log(user);
 
-user.save();
+// user.on('save', () => {
+//     console.log('User was saved.', user);
+// });
+
+// user.set({ name: 'Test User', age: 10 });
+
+// user.save();

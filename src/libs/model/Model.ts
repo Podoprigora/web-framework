@@ -1,26 +1,29 @@
-import { AxiosPromise } from 'axios';
+import { HasIdInterface } from './contracts/HasIdInterface';
+import { ModelSyncInterface } from './contracts/ModelSyncInterface';
 import { ModelAttributes } from './ModelAttributes';
 import { ModelEventing } from './ModelEventing';
-import { ModelSync } from './ModelSync';
 
 type EventsType = 'change' | 'save';
 
 type CallbackType = () => void;
 
-export interface HasIdInterface {
-    id?: number;
+interface ModelProps<T> {
+    attrs: T;
+    syncAdapter?: ModelSyncInterface<T>;
 }
 
 export class Model<T extends HasIdInterface> {
     private events = new ModelEventing();
-    private sync: ModelSync<T>;
+    private sync: ModelSyncInterface<T>;
     private attribures: ModelAttributes<T>;
 
-    constructor(attrs: T, url?: string) {
+    constructor(props: ModelProps<T>) {
+        const { attrs, syncAdapter } = props;
+
         this.attribures = new ModelAttributes<T>(attrs);
 
-        if (url && url.length > 0) {
-            this.sync = new ModelSync<T>(url);
+        if (syncAdapter) {
+            this.sync = syncAdapter;
         }
     }
 
@@ -52,8 +55,8 @@ export class Model<T extends HasIdInterface> {
             return;
         }
 
-        this.sync.fetch(id).then((response) => {
-            this.set(response.data);
+        this.sync.fetch(id).then((response: T) => {
+            this.set(response);
         });
     }
 
@@ -62,8 +65,8 @@ export class Model<T extends HasIdInterface> {
             return;
         }
 
-        this.sync.save(this.attribures.getAll()).then((response) => {
-            this.set(response.data);
+        this.sync.save(this.attribures.getAll()).then((response: T) => {
+            this.set(response);
             this.trigger('save');
         });
     }

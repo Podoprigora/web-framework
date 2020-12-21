@@ -1,4 +1,5 @@
 import { Model } from '../libs/model/Model';
+import { ModelSync } from '../libs/model/ModelSync';
 
 export interface UserProps {
     id?: number;
@@ -7,7 +8,10 @@ export interface UserProps {
 }
 
 export class UserModel extends Model<UserProps> {
-    constructor(attrs: UserProps) {
-        super(attrs, 'http://localhost:1111/users');
+    static create(attrs: UserProps): UserModel {
+        return new UserModel({
+            attrs,
+            syncAdapter: new ModelSync<UserProps>('http://localhost:1111/users')
+        });
     }
 }
