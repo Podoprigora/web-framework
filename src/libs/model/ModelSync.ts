@@ -9,7 +9,7 @@ const formatBaseUrl = (url: string = ''): string => {
 export class ModelSync<T extends HasIdInterface> implements ModelSyncInterface<T> {
     private baseUrl: string;
 
-    private getResponseData(response: AxiosResponse) {
+    private getResponseData(response: AxiosResponse): T {
         return response.data;
     }
 
