@@ -1,4 +1,4 @@
-import { Collection } from '../libs/model/Collection';
+import { ModelsCollection } from '../libs/model/ModelsCollection';
 import { Model } from '../libs/model/Model';
 import { ModelSync } from '../libs/model/ModelSync';
 
@@ -18,9 +18,14 @@ export class UserModel extends Model<UserProps> {
         });
     }
 
-    static createCollection(): Collection<UserModel, UserProps> {
-        return new Collection<UserModel, UserProps>(url, (item) => {
+    static createCollection(): ModelsCollection<UserModel, UserProps> {
+        return new ModelsCollection<UserModel, UserProps>(url, (item) => {
             return UserModel.create(item);
         });
+    }
+
+    setRandomAge(): void {
+        const age = Math.round(Math.random() * 100);
+        this.set({ age });
     }
 }

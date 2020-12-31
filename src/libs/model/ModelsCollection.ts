@@ -3,7 +3,7 @@ import { ModelEventing } from './ModelEventing';
 
 type EventsType = 'change';
 
-export class Collection<T, P> {
+export class ModelsCollection<T, P> {
     private events = new ModelEventing();
     models: T[] = [];
 
