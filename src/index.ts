@@ -1,5 +1,9 @@
 import { UserModel } from './models/UserModel';
 
-const user = UserModel.create({ id: 16 });
+const usersCollection = UserModel.createCollection();
 
-user.fetch();
+usersCollection.on('change', () => {
+    console.log(usersCollection);
+});
+
+usersCollection.fetch();

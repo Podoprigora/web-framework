@@ -7,6 +7,7 @@ export class ModelEventing {
 
     on(eventName: string, callback: Callback): void {
         const handlers = this.events[eventName] || [];
+
         this.events[eventName] = [...handlers, callback];
     }
 
