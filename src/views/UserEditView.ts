@@ -11,14 +11,18 @@ export class UserEditView extends ViewModel<UserModel> {
         };
     }
 
-    template() {
-        return `
-            <div>
-                <div class="user-detail-section"></div>
-                <div class="user-form-section"></div>
-            </div>
-        `;
+    template(): string {
+        return '';
     }
+
+    // template() {
+    //     return `
+    //         <div>
+    //             <div class="user-detail-section"></div>
+    //             <div class="user-form-section"></div>
+    //         </div>
+    //     `;
+    // }
 
     onRender() {
         const { userDetailElement, userFormElement } = this.regions;

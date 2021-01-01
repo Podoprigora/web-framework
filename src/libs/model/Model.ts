@@ -49,7 +49,7 @@ export class Model<T extends HasIdInterface> {
     }
 
     fetch(): void {
-        const id = this.get('id');
+        const id = this.get('id') as number;
 
         if (!id) {
             throw new Error('Cannot fetch data without an ID!');
