@@ -1,11 +1,20 @@
 export abstract class View {
     abstract template(): string;
-    abstract eventsMap(): { [key: string]: () => void };
+
+    public regions: { [key: string]: Element } = {};
 
     constructor(public parent: Element | null) {
         if (!this.parent) {
             throw new Error('Parent element not found!');
         }
+    }
+
+    eventsMap(): { [key: string]: () => void } {
+        return {};
+    }
+
+    regionsMap(): { [key: string]: string } {
+        return {};
     }
 
     bindEvents(fragment: DocumentFragment): void {
@@ -24,6 +33,21 @@ export abstract class View {
         }
     }
 
+    mapRegions(fragment: DocumentFragment): void {
+        const regionsMap = this.regionsMap();
+
+        for (let key in regionsMap) {
+            const selector = regionsMap[key];
+            const element = fragment.querySelector(selector);
+
+            if (element) {
+                this.regions[key] = element;
+            }
+        }
+    }
+
+    onRender(): void {}
+
     render(): void {
         if (!this.parent) {
             return;
@@ -33,6 +57,9 @@ export abstract class View {
 
         templateElement.innerHTML = this.template();
         this.bindEvents(templateElement.content);
+        this.mapRegions(templateElement.content);
+
+        this.onRender();
 
         this.parent.innerHTML = '';
         this.parent.append(templateElement.content);

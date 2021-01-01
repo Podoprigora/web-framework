@@ -1,7 +1,7 @@
 import { UserModel } from './models/UserModel';
-import { UserFormView } from './views/UserFormView';
+import { UserEditView } from './views/UserEditView';
 
-const userModel = UserModel.create({ id: 1, name: 'Demo User', age: 20 });
-const userFormView = new UserFormView(document.getElementById('root'), userModel);
+const userModel = UserModel.create({});
 
-userFormView.render();
+const userEditView = new UserEditView(document.getElementById('root'), userModel);
+userEditView.render();
