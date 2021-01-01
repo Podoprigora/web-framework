@@ -1,27 +1,11 @@
-interface ViewModelInterface {
-    on(eventName: string, callback: () => void): void;
-}
-
-export abstract class View<T extends ViewModelInterface> {
+export abstract class View {
     abstract template(): string;
     abstract eventsMap(): { [key: string]: () => void };
 
-    constructor(public parent: Element | null, public model: T | null) {
+    constructor(public parent: Element | null) {
         if (!this.parent) {
             throw new Error('Parent element not found!');
         }
-
-        this.bindModel();
-    }
-
-    bindModel(): void {
-        if (!this.model) {
-            return;
-        }
-
-        this.model.on('change', () => {
-            this.render();
-        });
     }
 
     bindEvents(fragment: DocumentFragment): void {

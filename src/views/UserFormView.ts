@@ -1,8 +1,8 @@
 import { UserModel } from '../models/UserModel';
-import { View } from './View';
+import { ViewModel } from '../libs/view/ViewModel';
 
-export class UserFormView extends View<UserModel> {
-    constructor(public parent: Element | null, public model: UserModel) {
+export class UserFormView extends ViewModel<UserModel> {
+    constructor(parent: Element | null, model: UserModel) {
         super(parent, model);
 
         this.onSetRandomAgeButtonClick = this.onSetRandomAgeButtonClick.bind(this);
@@ -30,14 +30,12 @@ export class UserFormView extends View<UserModel> {
         ) as HTMLInputElement | null;
 
         if (nameInputElement) {
-            this.model.set({ name: nameInputElement.value });
+            this.model.set({ name: nameInputElement?.value });
         }
     }
 
     template(): string {
-        const id = this.model.get('id');
-        const name = this.model.get('name');
-        const age = this.model.get('age');
+        const { id, name, age } = this.model.getAll();
 
         return `
             <form>

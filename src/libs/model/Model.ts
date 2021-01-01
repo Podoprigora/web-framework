@@ -14,7 +14,7 @@ interface ModelProps<T> {
 
 export class Model<T extends HasIdInterface> {
     private events = new ModelEventing();
-    private sync: ModelSyncInterface<T>;
+    private sync: ModelSyncInterface<T> | null = null;
     private attribures: ModelAttributes<T>;
 
     constructor(props: ModelProps<T>) {
@@ -29,6 +29,10 @@ export class Model<T extends HasIdInterface> {
 
     get get() {
         return this.attribures.get;
+    }
+
+    get getAll() {
+        return this.attribures.getAll;
     }
 
     set(update: T): void {

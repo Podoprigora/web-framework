@@ -5,11 +5,11 @@ export class ModelAttributes<T> {
         return this.data[propName];
     };
 
+    getAll = (): T => {
+        return this.data;
+    };
+
     set(update: T): void {
         Object.assign(this.data, update);
-    }
-
-    getAll(): T {
-        return this.data;
     }
 }
